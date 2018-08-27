@@ -1,7 +1,7 @@
 certifi==2018.8.13
 click==6.7
 Flask==1.0.2
-flask-restful==0.3.6
+gunicorn==19.9.0
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
