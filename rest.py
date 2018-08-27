@@ -1,9 +1,10 @@
 import datetime
 import json
 import time
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import os
 import uuid
+import prediction
 # from darpun_api import app
 # from __init__ import app
 
@@ -32,7 +33,8 @@ def upload_file():
         # print("file name: {} {}".format(name, ext))
         filename = name + "." + ext
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return "file successfully saved"
+        output = prediction.predict(filename)
+        return jsonify(output)
     return ''
  
 if __name__ == "__main__":
