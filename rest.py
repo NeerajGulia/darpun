@@ -2,6 +2,7 @@ import datetime
 import json
 import time
 from flask import Flask, request
+import os
 # from darpun_api import app
 # from __init__ import app
 
@@ -13,8 +14,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 #1MB
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    ext = filename.rsplit('.', 1)[1].lower()
+    return '.' in filename and ext in ALLOWED_EXTENSIONS, ext
 
 
 @app.route("/", methods=["GET"])
@@ -23,8 +24,10 @@ def helloWorld():
  
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if file and allowed_file(file.filename):
-        filename = time.time()
+    file = request.files['file']
+    allowed, ext = allowed_file(file.filename)
+    if file and allowed:
+        filename = str(time.time()) + "." + ext
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return "file successfully saved"
     return ''
