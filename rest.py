@@ -1,16 +1,15 @@
-"""
-script to give datetime and millisecond time conversion functionality
-"""
- 
 import datetime
 import json
 import time
- 
 from flask import Flask, request
- 
-# this is how we initialize a flask application
+# from darpun_api import app
+# from __init__ import app
+
 app = Flask(__name__)
- 
+
+@app.route("/", methods=["GET"])
+def helloWorld():
+    return "OK"
  
 @app.route("/timestamp", methods=["GET"])
 def get_timesptamp_millis():
@@ -59,6 +58,4 @@ if __name__ == "__main__":
     """
     this is run when the script is started.
     """
- 
-    # this is how we run the flask server, once the script is run
-    app.run(host='0.0.0.0', threaded=True)
+    app.run()
