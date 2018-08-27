@@ -3,6 +3,7 @@ import json
 import time
 from flask import Flask, request
 import os
+import uuid
 # from darpun_api import app
 # from __init__ import app
 
@@ -27,7 +28,9 @@ def upload_file():
     file = request.files['file']
     allowed, ext = allowed_file(file.filename)
     if file and allowed:
-        filename = str(time.time()) + "." + ext
+        name = uuid.uuid4().hex
+        # print("file name: {} {}".format(name, ext))
+        filename = name + "." + ext
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return "file successfully saved"
     return ''
