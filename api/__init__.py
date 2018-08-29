@@ -11,7 +11,7 @@ app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 #1MB
 
 MONGO_URL = os.environ.get('MONGO_URL')
 if not MONGO_URL:
-    MONGO_URL = "mongodb+srv://admin:n33raj@darpun-db-jf5rc.mongodb.net/darpun?retryWrites=true" #"mongodb://localhost:27017/rest"; # give local url
+    MONGO_URL = "mongodb://localhost:27017/test"; # give local url
 
 app.config['MONGO_URI'] = MONGO_URL
 

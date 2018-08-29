@@ -3,7 +3,6 @@ from flask import request, abort, jsonify
 from flask_restful import Resource, reqparse
 from bson.objectid import ObjectId
 from api import mongo, api, app, utils
-# import utils
 from werkzeug.datastructures import FileStorage
 import uuid
 import os
