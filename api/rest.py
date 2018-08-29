@@ -18,7 +18,7 @@ class Root(Resource):
     def get(self):
         return {
             'status': 'OK',
-            'mongo': str(mongo.db),
+            # 'mongo': str(mongo.db),
         }
 
 class Disease(Resource):
