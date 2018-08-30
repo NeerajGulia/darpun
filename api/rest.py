@@ -13,13 +13,6 @@ def allowed_file(filename):
     ext = filename.rsplit('.', 1)[1].lower()
     return '.' in filename and ext in ALLOWED_EXTENSIONS, ext
 
-class Root(Resource):
-    def get(self):
-        return {
-            'status': 'OK',
-            # 'mongo': str(mongo.db),
-        }
-
 class Disease(Resource):
     def get(self, disease_id):
         return mongo.db.diseases.find_one_or_404({"_id": disease_id})
@@ -30,7 +23,15 @@ class LocationList(Resource):
             super(LocationList, self).__init__()
             
     def get(self):
-        return  [x for x in mongo.db.location.find()]        
+        return  [x for x in mongo.db.location.find({}, {'_id': False})]
+
+class RemedyList(Resource):
+    def __init__(self, *args, **kwargs):
+            super(RemedyList, self).__init__()
+            
+    def get(self):
+        return  [x for x in mongo.db.remedies.find({}, {'_id': False})]
+
         
 class DiseaseList(Resource):
     def __init__(self, *args, **kwargs):
@@ -40,7 +41,7 @@ class DiseaseList(Resource):
             super(DiseaseList, self).__init__()
             
     def get(self):
-        return  [x for x in mongo.db.diseases.find()]
+        return  [x for x in mongo.db.diseases.find({}, {'_id': False})]
 
     def post(self):
         args = self.parser.parse_args()
@@ -68,9 +69,9 @@ class DiseaseList(Resource):
             return jsonify({'result' : {'status': False, 'message': output['message']}})
         abort(400)
         
-api.add_resource(Root, '/')
-api.add_resource(LocationList, '/locations')
-api.add_resource(DiseaseList, '/diseases')
-api.add_resource(Disease, '/diseases/<ObjectId:disease_id>')
+api.add_resource(LocationList, '/api/locations')
+api.add_resource(DiseaseList, '/api/diseases') 
+api.add_resource(RemedyList, '/api/remedies')
+api.add_resource(Disease, '/api/diseases/<ObjectId:disease_id>')
 # api.add_resource(Disease, '/diseases/<ObjectId:name>')
 
