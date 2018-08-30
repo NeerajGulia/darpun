@@ -14,13 +14,13 @@ app.debug = False
 
 MONGO_URL = os.environ.get('MONGO_URL')
 if not MONGO_URL:
-    MONGO_URL = "mongodb+srv://admin:n33raj@darpun-db-jf5rc.mongodb.net/darpun?retryWrites=true" #"mongodb://localhost:27017/test"; # give local url
+    MONGO_URL = "mongodb://localhost:27017/test"; # give local url
 
 app.config['MONGO_URI'] = MONGO_URL
 
 GEO_URL = os.environ.get('GEO_URL')
 if not GEO_URL:
-    GEO_URL = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBNyP78_OKJpgCNMPqASTlWuOOQOFf94WY&latlng="
+    GEO_URL = "https://maps.googleapis.com/maps/api/geocode/json?&latlng="
 
 app.config['GEO_URL'] = GEO_URL
 
@@ -35,7 +35,7 @@ api = Api(app)
 api.representations = {'application/json': output_json}
 
 # Logging section
-handler = logging.FileHandler(os.environ.get("LOGFILE", "log/darpun.log"))
+handler = logging.FileHandler(os.environ.get("LOGFILE", "darpun.log"))
 formatter = logging.Formatter("[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s")
 handler.setFormatter(formatter)
 logger = logging.getLogger()
