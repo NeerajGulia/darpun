@@ -6,6 +6,7 @@ from api import utils, app, api, mongo, schema
 from werkzeug.datastructures import FileStorage
 import uuid
 import os
+from flask import render_template
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -69,6 +70,10 @@ class DiseaseList(Resource):
                 return jsonify({'result' : output})
             return jsonify({'result' : {'status': False, 'message': output['message']}})
         abort(400)
+
+@app.route('/')
+def dashboard():
+    return render_template('dashboard.html')
         
 api.add_resource(LocationList, '/api/locations')
 api.add_resource(DiseaseList, '/api/diseases') 

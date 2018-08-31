@@ -1,23 +1,18 @@
 <!DOCTYPE html>
-
-
 <html>
-
 <head>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
   <meta charset="utf-8">
-  <title>Circles</title>
+  <title>Darpun Dashboard - Analysis of Plant diseases</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
   <style>
     #map {
       min-height: 460px;
       width: 100%
     }
-
     html,
     body {
       height: 100%;
@@ -25,24 +20,20 @@
       padding: 0;
       width: 100%;
     }
-
     .custom-label {
       margin-right: 20px;
       margin-left: 5px;
     }
-
     #options {
       margin-top: 10px;
       overflow-y: auto;
       height: 355px;
     }
-
     .checkmark {
       height: 18px;
       width: 18px;
       background-color: #eee;
     }
-
     #go_button {
       width: 97%;
       border-radius: 4px;
@@ -52,7 +43,6 @@
       cursor: pointer;
       border: 2px solid #323545;
     }
-
     .section-header {
       min-height: 40px;
       height: auto;
@@ -64,18 +54,15 @@
       padding: 15px 10px 15px 10px;
       position: initial;
     }
-
     .dashboard {
       height: 100%;
       overflow-y: scroll;
     }
-
     .left_panel-map {
       background-color: #D9DEE4;
       height: auto;
       min-height: 480px;
     }
-
     .card {
       background-color: #E6E8F0;
       padding: 5px;
@@ -84,7 +71,6 @@
       -moz-box-shadow: 8px 10px 15px -6px rgba(0, 0, 0, 0.59);
       box-shadow: 8px 10px 15px -6px rgba(0, 0, 0, 0.59);
     }
-
     .section-card {
       border-radius: 4px;
       padding: 15px;
@@ -93,50 +79,37 @@
       -moz-box-shadow: 1px 2px 15px 4px rgba(0, 0, 0, 0.59);
       box-shadow: 1px 2px 15px 4px rgba(0, 0, 0, 0.59);
     }
-
     .tab-headers {
       background-color: #172D44;
       /*         margin-bottom:10px; */
       color: white;
     }
-
     .list-item {
       border-right: 1px solid gray;
       /*         color:"white !Important"; */
     }
-
     .tab-link {
       color: white !Important;
     }
-
     .tab-link:hover {
       text-decoration: none;
       cursor: pointer;
     }
-
     .list-item:hover {
       background-color: #172D77;
     }
-
     .list-inline {
       margin-bottom: 0px;
       padding-bottom: 0px;
     }
   </style>
 </head>
-
 <body>
-
-
-
   <div class="dashboard">
-
     <div class="section-header col-md-12" style="padding-left:30px">
       DARPUN
     </div>
     <!--     <div class="tab-headers"> -->
-
-
     <div class="container" style="width:95%">
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
@@ -155,10 +128,7 @@
           <h4>
             Geographical distribution of Diseases
           </h4>
-
           <div class="row">
-
-
             <div id="left-panel-map" class="col-md-3" style="float: left">
               <div class="card">
                 <span style="font-weight:bold; ">Diseases</span>
@@ -166,37 +136,29 @@
                 </div>
               </div>
             </div>
-
             <div style="float: left;" class="col-md-9">
               <div class="card">
                 <div id="map">
                 </div>
               </div>
             </div>
-
           </div>
           <!--     </div> -->
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           <!--            <div class="section-card"> -->
-          <h4>
-            Disease Demographics
-          </h4>
+          <h4>Disease Demographics</h4>
           <div class="row">
-
-
             <div class="col-md-5" style="float: left" style="width:100%">
               <div class="card" style="width:100%">
                 <div id="pieChartContainer" style="min-height: 400px; width: 100%"></div>
               </div>
-
             </div>
             <div class="col-md-7" style="float: left" style="width:100%">
               <div class="card" style="width:100%">
                 <div id="barChartContainer" style="min-height: 400px; width: 100%"></div>
               </div>
             </div>
-            
           </div>
         </div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
@@ -208,29 +170,17 @@
               <div class="card" style="width:100%">
                 <div id="stateChartContainer" style="min-height: 400px; width: 100% !Important"></div>
               </div>
-
             </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
   <!--     </div> -->
-
-
-
-
   </div>
-
-
-
   <!--     class="custom-control custom-checkbox" -->
-
-
   <script>
     var city_code = []
-
     function initMap(citymap) {
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 5,
@@ -244,7 +194,6 @@
         "7E5109", "16f1b4", "f8a1be", "ac98ac", "efd19f", "#85929E", "EC7063", "9B59B6", "145A32", "2E4053", "F2D7D5", "F4D03F", "CD5C5C", "FFA07A",
         "f7e6fd", "133337", "8B8B00", "548B54", "00FF7F", "03A89E", "00F5FF", "4A708B", "1E90FF", "00008B", "483D8B", "FF1493"
       ]
-
       for (var city in citymap) {
         //           var center= citymap["coordinates"][city].geocode
         //           alert(citymap[city].disease)
@@ -275,50 +224,35 @@
         createCharts(citymap)
       }
     }
-
     $('#profile-tab').on("shown.bs.tab",function(){
       createCharts(citymap);
 //       $('#profile-tab').off(); // to remove the binded event after the initial rendering
   });
-    
     $('#contact-tab').on("shown.bs.tab",function(){
       createCharts(citymap);
 //       $('#contact-tab').off(); // to remove the binded event after the initial rendering
   });
-
     $(function(){
       $('#home-tab').trigger('click')
     })
-    
     var uniques = []
     var citymap = null
-
     function contains(v) {
       for (var i = 0; i < uniques.length; i++) {
         if (uniques[i] === v) return true;
       }
       return false;
     };
-
-
     function createCheckboxes(citymap_object, city_code) {
-      //        var duplicates = [];
       citymap = citymap_object
-      //        alert(JSON.stringify(citymap))
       for (var city in citymap) {
         var duplicate = citymap[city].disease;
-        //          alert(uniques)
         if (!contains(duplicate))
           uniques.push(duplicate)
-        //          alert(uniques)
       }
-      //        alert(uniques)
-
-
       var container = document.getElementById('options')
       var left_panel_map = document.getElementById('left-panel-map')
       for (var city in uniques) {
-        //          alert(uniques[city])
         var checkbox = document.createElement('input');
         checkbox.type = "checkbox";
         checkbox.name = "chckbx_" + uniques[city];
@@ -336,7 +270,6 @@
         container.appendChild(label);
 
         var color_code = document.createElement('div')
-        //         alert(uniques[city])
         color_code.style.backgroundColor = "#" + colors[city_code.indexOf(uniques[city])];
         color_code.style.height = '20px';
         color_code.style.width = '20px';
@@ -354,20 +287,13 @@
       button.onclick = function() {
         var checked_boxes = container.querySelectorAll('input[type="checkbox"]:checked')
         var new_citymap_object = []
-        //         var coordinates={}
-        //         var counter=1
         for (var i = 0; i < checked_boxes.length; i++) {
-          //             alert(citymap["coordinates"].length)
           for (var city in citymap) {
-            //                  alert( checked_boxes[i].value +"  "+citymap["coordinates"][city].id)
             if (checked_boxes[i].value == citymap[city].disease) {
-
               new_citymap_object.push(citymap[city])
-              //                    counter++;
             }
           }
         }
-        //           new_citymap_object.push(coordinates);
         initMap(new_citymap_object)
       };
       left_panel_map.appendChild(document.createElement('br'))
@@ -383,17 +309,12 @@
       xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           initMap(JSON.parse(xmlhttp.responseText));
-
         }
       }
       xmlhttp.open("GET", url, true);
       xmlhttp.send(null);
     }
-
-
     function createCharts(citymap) {
-
-
       var count_dict = {};
       var state_dict = {};
       var monthwise_issues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -404,21 +325,16 @@
           count_dict[citymap[city].disease] = 1;
         else
           count_dict[citymap[city].disease] += 1;
-
         var json_date = citymap[city].createdOn;
         var js_date = new Date(json_date) //yyyy-mm-dd
         var month = js_date.getMonth();
-
-
         if (!(citymap[city].state in state_dict))
           state_dict[citymap[city].state] = 1;
         else
           state_dict[citymap[city].state] += 1;
-
         monthwise_issues[month] += 1;
         total += 1;
       }
-
       var state_wise_sorted = Object.keys(state_dict).map(function(key) {
         return [key, state_dict[key]];
       });
@@ -443,15 +359,12 @@
           "label": values[1]
         })
       }
-
       var datapoints_pie = [];
       for (var key in count_dict)
         datapoints_pie.push({
           "y": count_dict[key] * 100 / total,
           "label": key
         })
-
-
       var pie_chart = new CanvasJS.Chart("pieChartContainer", {
         animationEnabled: true,
         title: {
@@ -466,9 +379,6 @@
         }]
       });
       pie_chart.render();
-
-
-
       var dataPoints_bar = [];
       for (var i = 0; i < months.length; i++) {
         dataPoints_bar.push({
@@ -494,7 +404,6 @@
         }]
       });
       bar_chart.render();
-
 
       var stateChartContainer = new CanvasJS.Chart("stateChartContainer", {
         animationEnabled: true,
@@ -544,5 +453,4 @@
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXXznqfU2MUOvhWINVrdgqtCVTG8bbmNQ&callback=getCoordinates">
   </script>
 </body>
-
 </html>
