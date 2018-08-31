@@ -3,32 +3,36 @@ import json
 import requests
 from api.schema import Prediction, Disease, Remedy, Location, Geocode, ComplexHandler
 import logging
+import os
+import numpy as np
 
 log = logging.getLogger(__name__) 
 
-def predict(filename):
+def predict(filepath):
+    output = model.make_prediction(filepath)
+    # print('predict: filepath: {}, prediction: {}'.format(filepath, output))
+    if len(output) > 0:
+        diseaseName = output[0][0]
+        conf = output[0][1]
+        remedy = None
+        disease = getDisease(diseaseName)
+        if disease:
+            remedy = getRemedy(disease.remedyName)
+        if disease and remedy:
+            p = Prediction()
+            p.status = True
+            p.disease = disease
+            p.remedy = remedy
+            p.confidence = str(conf) + "%"
+            return json.dumps(p, default=ComplexHandler)
 
-    diseaseName = 'Apple random name' # get this information from the model
-    remedy = None
-    disease = getDisease(diseaseName)
-    if disease:
-        remedy = getRemedy(disease.remedyName)
-    if not disease or not remedy:
-        predict = Prediction()
-        predict.status = False
-        predict.message = 'We are not able to predict the disease for given image'
-        return json.dumps(predict, default=ComplexHandler)
+    predict = Prediction()
+    predict.status = False
+    predict.message = 'We are not able to predict the disease for given image'
+    return json.dumps(predict, default=ComplexHandler)
     
-    p = Prediction()
-    p.status = True
-    p.disease = disease
-    p.remedy = remedy
-
-    return json.dumps(p, default=ComplexHandler)
-
 def getDisease(name):
     d = mongo.db.diseases.find_one({'name' : name})
-    # print('getDisease: ', d)
     if not d:
         return None
     output = Disease()
@@ -39,7 +43,6 @@ def getDisease(name):
 
 def getRemedy(name):
     r = mongo.db.remedies.find_one({'name' : name})
-    # print('getRemedy: ', r)
     if not r:
         return None
     output = Remedy()
@@ -49,11 +52,14 @@ def getRemedy(name):
     output.dose = r.get('dose', '')
     output.remarks = r.get('remarks', '')
     return output
+
+def getJson(obj):
+    return json.loads(json.dumps(obj, default=ComplexHandler))
     
 def tryAddLocation(lat, lng, disease):
     try:
+        # print('tryAddLocation: lat: {}, lng: {}, disease: {}'.format(lat, lng, disease))
         # location = mongo.db.location.find_one({'geocode' : {'lat' : lat, 'lng': lng}, 'disease': disease})
-        # print('tryAddLocation > location: ', location)
         if mongo.db.location.find_one({'geocode' : {'lat' : lat, 'lng': lng}, 'disease': disease}):
             return #we already have data for this geocode and disease, so not adding it again
         geocode = Geocode()
@@ -63,6 +69,7 @@ def tryAddLocation(lat, lng, disease):
         loc.geocode = geocode
         loc.disease = disease
         output = getGeoInfo(lat, lng)
+        # print('tryAddLocation: output: ', output)
         if output != None:
             loc.pincode = output.get('postal_code', None)
             loc.city = output.get('administrative_area_level_2', None)
@@ -71,24 +78,18 @@ def tryAddLocation(lat, lng, disease):
             if loc.pincode == None or loc.city == None or loc.state == None or loc.country == None:
                 log.warning("tryAddLocation: Something is not right: {}".format(json.dumps(loc, default=ComplexHandler)))
                 return
-            dumpedLoc = json.dumps(loc, default=ComplexHandler)
-            # print('tryAddLocation > dumpedLoc: ', dumpedLoc)
-            dumpedLoc = json.loads(dumpedLoc)
+            dumpedLoc = getJson(loc)
             mongo.db.location.insert(dumpedLoc)
     except Exception as e :
         print('exception: {}'.format(str(e)))
         log.error('tryAddLocation: ', str(e))
 
 def getGeoInfo(lat, lng):
-    # print('getGeoInfo > lat: {}, lng: {}'.format(lat,lng))
     url = (app.config['GEO_URL'] + lat + "," + lng)
-    # print('getGeoInfo > url: ', url)
     result = requests.get(url)
     js = result.json()
     if result.status_code != 200 or len(js['results']) == 0:
-        # print(js['status'])
         return None
-    # print('getGeoInfo: ', js)
     names = {}
     for i in range(len(js['results'][0]['address_components'])):
         names[js['results'][0]['address_components'][i]['types'][0]] = js['results'][0]['address_components'][i]['long_name']

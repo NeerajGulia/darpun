@@ -6,6 +6,7 @@ from bson.json_util import dumps
 import logging
 import logging.handlers
 from flask_cors import CORS
+from predict.model import Predict
 
 app = Flask(__name__)
 CORS(app)
@@ -15,14 +16,14 @@ app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 #1MB
 app.debug = False
 
 MONGO_URL = os.environ.get('MONGO_URL')
-print('mongo url: ', MONGO_URL)
+# print('mongo url: ', MONGO_URL)
 if not MONGO_URL:
     MONGO_URL = "mongodb://localhost:27017/test"; # give local url
 
 app.config['MONGO_URI'] = MONGO_URL
 
 GEO_URL = os.environ.get('GEO_URL')
-print('GEO_URL: ', GEO_URL)
+# print('GEO_URL: ', GEO_URL)
 if not GEO_URL:
     GEO_URL = "https://maps.googleapis.com/maps/api/geocode/json?&latlng="
 
@@ -43,7 +44,9 @@ handler = logging.FileHandler(os.environ.get("LOGFILE", "darpun.log"))
 formatter = logging.Formatter("[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s")
 handler.setFormatter(formatter)
 logger = logging.getLogger()
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.ERROR)
 logger.addHandler(handler)
+
+model = Predict('predict/resnet.h5', 'predict/label_names.csv')
 
 import api.rest

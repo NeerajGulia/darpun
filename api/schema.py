@@ -47,6 +47,7 @@ class Prediction():
         self.message = ''
         self.disease = ''
         self.remedy = ''
+        self.confidence = ''
 
     def jsonable(self):
         return self.__dict__    

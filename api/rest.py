@@ -48,19 +48,18 @@ class DiseaseList(Resource):
         args = self.parser.parse_args()
         lat = args['lat']
         lng = args['lng']
-        # print(args)
         file = args['file']
-        if not file:
+        # print('file: {}, filename: {}'.format(file, file.filename))
+        if not file or file.filename == '':
             abort(400)
         allowed, ext = allowed_file(file.filename)
         if allowed:
             name = uuid.uuid4().hex
             filename = name + "." + ext
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            outp = utils.predict(filename)
-            # print('utils.predict type: ', type(outp))
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            outp = utils.predict(filepath)
             output = json.loads(outp)
-            # print('json.loads type: ', type(output))
             if output['status']:
                 name = output['disease']['name']
                 id = mongo.db.diseases.find_one({'name' : name})
@@ -75,5 +74,4 @@ api.add_resource(LocationList, '/api/locations')
 api.add_resource(DiseaseList, '/api/diseases') 
 api.add_resource(RemedyList, '/api/remedies')
 api.add_resource(Disease, '/api/diseases/<ObjectId:disease_id>')
-# api.add_resource(Disease, '/diseases/<ObjectId:name>')
 
