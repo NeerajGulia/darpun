@@ -20,6 +20,14 @@ class Remedy():
     def jsonable(self):
         return self.__dict__    
 
+class Geocode():
+    def __init__(self):
+            self.lat = ''
+            self.lng = ''
+
+    def jsonable(self):
+        return self.__dict__    
+        
 class Location():
     def __init__(self): 
         self.geocode = ''

@@ -37,7 +37,8 @@ class DiseaseList(Resource):
     def __init__(self, *args, **kwargs):
             self.parser = reqparse.RequestParser()
             self.parser.add_argument('file', type=FileStorage, location='files', required=True, help="no file uploaded")
-            self.parser.add_argument('location', type=str)
+            self.parser.add_argument('lat', type=str, help="Please provide geo latitude")
+            self.parser.add_argument('lng', type=str, help="Please provide geo longitude")
             super(DiseaseList, self).__init__()
             
     def get(self):
@@ -45,7 +46,8 @@ class DiseaseList(Resource):
 
     def post(self):
         args = self.parser.parse_args()
-        location = args['location']
+        lat = args['lat']
+        lng = args['lng']
         # print(args)
         file = args['file']
         if not file:
@@ -64,7 +66,7 @@ class DiseaseList(Resource):
                 id = mongo.db.diseases.find_one({'name' : name})
                 if not id: #we do not identify this desease yet
                     return jsonify({'result' : {'status': False, 'message': 'We are not able to predict the disease for given image'}})
-                utils.tryAddLocation(location, name)
+                utils.tryAddLocation(lat, lng, name)
                 return jsonify({'result' : output})
             return jsonify({'result' : {'status': False, 'message': output['message']}})
         abort(400)

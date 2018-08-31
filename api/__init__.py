@@ -13,12 +13,14 @@ app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 #1MB
 app.debug = False
 
 MONGO_URL = os.environ.get('MONGO_URL')
+print('mongo url: ', MONGO_URL)
 if not MONGO_URL:
     MONGO_URL = "mongodb://localhost:27017/test"; # give local url
 
 app.config['MONGO_URI'] = MONGO_URL
 
 GEO_URL = os.environ.get('GEO_URL')
+print('GEO_URL: ', GEO_URL)
 if not GEO_URL:
     GEO_URL = "https://maps.googleapis.com/maps/api/geocode/json?&latlng="
 
