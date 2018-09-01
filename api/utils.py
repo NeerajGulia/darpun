@@ -14,6 +14,7 @@ def getJson(obj):
 
 def predict(filepath):
     output = model.make_prediction(filepath)
+    log.debug('predict output: ' + output)
     # print('predict: filepath: {}, prediction: {}'.format(filepath, output))
     if len(output) > 0:
         diseaseName = output[0][0]
@@ -90,8 +91,9 @@ def tryAddLocation(lat, lng, disease):
             dumpedLoc = getJson(loc)
             mongo.db.location.insert(dumpedLoc)
     except Exception as e :
-        print('exception: {}'.format(str(e)))
-        log.error('tryAddLocation: ', str(e))
+        msg = 'tryAddLocation exception: {}'.format(str(e)
+        print(msg)
+        log.error(msg)
 
 def getGeoInfo(lat, lng):
     url = (application.config['GEO_URL'] + lat + "," + lng)

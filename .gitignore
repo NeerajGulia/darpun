@@ -1,2 +1,6 @@
 *.pyc
 *.log
+*.h5
+*.JPG
+*.ipynb
+predict/resnet.h5
