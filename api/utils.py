@@ -9,6 +9,9 @@ import asyncio
 
 log = logging.getLogger(__name__) 
 
+def getJson(obj):
+    return json.loads(json.dumps(obj, default=ComplexHandler))
+
 def predict(filepath):
     output = model.make_prediction(filepath)
     # print('predict: filepath: {}, prediction: {}'.format(filepath, output))
@@ -25,7 +28,7 @@ def predict(filepath):
             p.disease = disease
             p.remedy = remedy
             p.confidence = str(conf) + "%"
-            return json.dumps(p, default=ComplexHandler)
+            return getJson(p)
 
     predict = Prediction()
     predict.status = False
@@ -54,8 +57,6 @@ def getRemedy(name):
     output.remarks = r.get('remarks', '')
     return output
 
-def getJson(obj):
-    return json.loads(json.dumps(obj, default=ComplexHandler))
 
 def fireAndForget(task, *args, **kwargs):
     loop = asyncio.new_event_loop()
