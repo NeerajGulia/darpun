@@ -4,4 +4,3 @@
 *.JPG
 *.ipynb
 predict/resnet.h5
-crowdai_labels.csv
