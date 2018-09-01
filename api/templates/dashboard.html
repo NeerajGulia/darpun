@@ -181,11 +181,22 @@
   <!--     class="custom-control custom-checkbox" -->
   <script>
     var city_code = []
+    function pinSymbol(color) {
+      return {
+        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+        fillColor: color,
+        fillOpacity: .7,
+        strokeColor: '#000',
+        strokeOpacity: 0.5,
+        strokeWeight: 2,
+        scale: .8
+      };
+    }
     function initMap(citymap) {
       var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 5,
+        zoom: 4.5,
         center: {
-          "lat": 19.6,
+          "lat": 22.0,
           "lng": 83.4
         },
         mapTypeId: 'roadmap'
@@ -198,7 +209,6 @@
         //           var center= citymap["coordinates"][city].geocode
         //           alert(citymap[city].disease)
         var geocode = citymap[city].geocode
-
         var Mod_geocode = {
           "lat": parseFloat(geocode.lat),
           "lng": parseFloat(geocode.lng)
@@ -208,15 +218,17 @@
           city_code.push(citymap[city].disease)
         var code = city_code.indexOf(citymap[city].disease)
         //           alert(citymap[city].geocode)
-        var cityCircle = new google.maps.Circle({
-          strokeColor: "#" + colors[code],
-          strokeOpacity: 0.8,
-          strokeWeight: 3,
-          fillColor: "#" + colors[code],
-          fillOpacity: 0.6,
-          map: map,
-          center: Mod_geocode,
-          radius: 50000
+        var cityCircle = new google.maps.Marker({
+            position: Mod_geocode,
+            map: map,
+            icon: pinSymbol("#" + colors[code])
+            <!-- icon: { -->
+              <!-- path: google.maps.SymbolPath.CIRCLE, -->
+              <!-- scale: 3, -->
+              <!-- strokeColor: "#" + colors[code], -->
+              <!-- strokeOpacity: 0.2, -->
+              <!-- fillColor: "#" + colors[code], -->
+            <!-- } -->
         });
       }
       if (document.getElementById('options').innerHTML.trim() === "") {
