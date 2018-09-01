@@ -8,6 +8,7 @@ import uuid
 import os
 from flask import render_template
 import time
+import logging
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -64,9 +65,8 @@ class DiseaseList(Resource):
             filepath = os.path.join(application.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
             start = time.time()
-            outp = utils.predict(filepath)
+            output = utils.predict(filepath)
             log.debug('time taken for utils.predict: ', time.time() - start)
-            output = json.loads(outp)
             if output['status']:
                 name = output['disease']['name']
                 id = mongo.db.diseases.find_one({'name' : name})

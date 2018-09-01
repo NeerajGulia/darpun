@@ -33,7 +33,7 @@ def predict(filepath):
     predict = Prediction()
     predict.status = False
     predict.message = 'We are not able to predict the disease for given image'
-    return json.dumps(predict, default=ComplexHandler)
+    return getJson(predict)
     
 def getDisease(name):
     d = mongo.db.diseases.find_one({'name' : name})

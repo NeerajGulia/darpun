@@ -8,6 +8,7 @@ import csv
 import os
 import tensorflow as tf
 import time
+import logging
 
 log = logging.getLogger(__name__) 
 
