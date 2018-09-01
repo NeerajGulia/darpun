@@ -44,7 +44,7 @@ class Predict:
         with self.graph.as_default():
             preds = self.model.predict(x)
         
-        log.debug('make_prediction: ' +  str(time.time() - s1))
+        print('make_prediction: ' +  str(time.time() - s1))
         idx = np.argsort(preds)[0][-3:][::-1]
         percent = preds[0][idx]*100
         out = [self.label_names[i] for i in idx]        

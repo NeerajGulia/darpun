@@ -66,7 +66,7 @@ class DiseaseList(Resource):
             file.save(filepath)
             start = time.time()
             output = utils.predict(filepath)
-            log.debug('time taken for utils.predict: '+ str(time.time() - start))
+            print('time taken for utils.predict: '+ str(time.time() - start))
             if output['status']:
                 name = output['disease']['name']
                 id = mongo.db.diseases.find_one({'name' : name})
@@ -74,8 +74,8 @@ class DiseaseList(Resource):
                     return jsonify({'result' : {'status': False, 'message': 'We are not able to predict the disease for given image'}})
                 s2 = time.time()
                 utils.fireAndForget(utils.tryAddLocation, lat, lng, name)
-                log.debug('tryAddLocation: ' +  str(time.time() - s2))
-                log.debug('total time taken by post call: ' +  str(time.time() - s1))
+                print('tryAddLocation: ' +  str(time.time() - s2))
+                print('total time taken by post call: ' +  str(time.time() - s1))
                 return jsonify({'result' : output})
             return jsonify({'result' : {'status': False, 'message': output['message']}})
         abort(400)

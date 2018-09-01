@@ -14,7 +14,7 @@ def getJson(obj):
 
 def predict(filepath):
     output = model.make_prediction(filepath)
-    log.debug('predict output: ' + str(output))
+    print('predict output: ' + str(output))
     # print('predict: filepath: {}, prediction: {}'.format(filepath, output))
     if len(output) > 0:
         diseaseName = output[0][0]
@@ -80,12 +80,12 @@ def tryAddLocation(lat, lng, disease):
         loc.disease = disease
         output = getGeoInfo(lat, lng)
         # print('tryAddLocation: output: ', output)
-        if output != None:
+        if output is not None:
             loc.pincode = output.get('postal_code', None)
             loc.city = output.get('administrative_area_level_2', None)
             loc.state = output.get('administrative_area_level_1', None)
             loc.country = output.get('country', None)
-            if loc.pincode == None or loc.city == None or loc.state == None or loc.country == None:
+            if loc.pincode is None or loc.city is None or loc.state == None or loc.country == None:
                 log.warning("tryAddLocation: Something is not right: {}".format(json.dumps(loc, default=ComplexHandler)))
                 return
             dumpedLoc = getJson(loc)
