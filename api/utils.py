@@ -14,7 +14,7 @@ def getJson(obj):
 
 def predict(filepath):
     output = model.make_prediction(filepath)
-    log.debug('predict output: ' + output)
+    log.debug('predict output: ' + str(output))
     # print('predict: filepath: {}, prediction: {}'.format(filepath, output))
     if len(output) > 0:
         diseaseName = output[0][0]
@@ -91,7 +91,7 @@ def tryAddLocation(lat, lng, disease):
             dumpedLoc = getJson(loc)
             mongo.db.location.insert(dumpedLoc)
     except Exception as e :
-        msg = 'tryAddLocation exception: {}'.format(str(e)
+        msg = 'tryAddLocation exception: {}'.format(str(e))
         print(msg)
         log.error(msg)
 

@@ -22,6 +22,7 @@ class Predict:
         """
         # load the model
         self.model = load_model(model_path)
+        print('model loaded: ', model_path)
         self.model._make_predict_function()
         self.graph = tf.get_default_graph()
 

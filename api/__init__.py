@@ -40,15 +40,19 @@ api = Api(application)
 api.representations = {'application/json': output_json}
 
 # Logging section
+
+logLevel = os.environ.get('LOG_LEVEL')
+if not logLevel:
+    logLevel = logging.ERROR
+
 handler = logging.FileHandler(os.environ.get("LOGFILE", "darpun.log"))
 formatter = logging.Formatter("[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s")
 handler.setFormatter(formatter)
 logger = logging.getLogger()
-logger.setLevel(logging.ERROR)
+logger.setLevel(logLevel)
 logger.addHandler(handler)
 
 modelPath = os.environ.get('MODEL_PATH')
-# print('GEO_URL: ', GEO_URL)
 if not modelPath:
     modelPath = 'predict/resnet.h5'
 
