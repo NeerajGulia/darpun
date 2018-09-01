@@ -23,7 +23,7 @@ def predict(filepath):
         disease = getDisease(diseaseName)
         if disease:
             remedy = getRemedy(disease.remedyName)
-        if disease and remedy:
+        if disease is not None:
             p = Prediction()
             p.status = True
             p.disease = disease

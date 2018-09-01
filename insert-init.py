@@ -11,20 +11,21 @@ def insertDisease(name):
         d = utils.getJson(d)
         mongo.db.diseases.insert(d)
     
-def insertRemedy(name):
-    if not mongo.db.remedies.find_one({'name' : name}):
+def insertRemedy(disease, remedyDescription):
+    remedyName = 'Remedy for ' + disease
+    if not mongo.db.remedies.find_one({'name' : remedyName}):
         r = Remedy()
-        r.name = 'Remedy for ' + name
-        r.description = 'Description for ' + name
-        r.medicine = 'Medicine for ' + name
-        r.dose = 'Dose for ' + name
-        r.remarks = 'Remarks for ' + name
+        r.name = remedyName
+        r.description = remedyDescription
+        r.medicine = ''
+        r.dose = ''
+        r.remarks = ''
         r = utils.getJson(r)
         mongo.db.remedies.insert(r)
     
-with open('predict/label_names.csv') as csvfile:
+with open('crowdai_labels.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         insertDisease(line[0])
-        insertRemedy(line[0])
+        insertRemedy(line[0], line[1])
         print('inserted: ', line[0])
