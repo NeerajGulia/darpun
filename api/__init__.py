@@ -47,6 +47,11 @@ logger = logging.getLogger()
 logger.setLevel(logging.ERROR)
 logger.addHandler(handler)
 
-model = Predict('predict/resnet.h5', 'predict/label_names.csv')
+modelPath = os.environ.get('MODEL_PATH')
+# print('GEO_URL: ', GEO_URL)
+if not modelPath:
+    modelPath = 'predict/resnet.h5'
+
+model = Predict(modelPath, 'predict/label_names.csv')
 
 import api.rest
