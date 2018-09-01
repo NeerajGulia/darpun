@@ -8,35 +8,35 @@ import logging.handlers
 from flask_cors import CORS
 from predict.model import Predict
 
-app = Flask(__name__)
-CORS(app)
+application = Flask(__name__)
+CORS(application)
 
-app.config['UPLOAD_FOLDER'] = 'uploads/'
-app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 #1MB
-app.debug = False
+application.config['UPLOAD_FOLDER'] = 'uploads/'
+application.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 #1MB
+application.debug = False
 
 MONGO_URL = os.environ.get('MONGO_URL')
 # print('mongo url: ', MONGO_URL)
 if not MONGO_URL:
     MONGO_URL = "mongodb://localhost:27017/test"; # give local url
 
-app.config['MONGO_URI'] = MONGO_URL
+application.config['MONGO_URI'] = MONGO_URL
 
 GEO_URL = os.environ.get('GEO_URL')
 # print('GEO_URL: ', GEO_URL)
 if not GEO_URL:
     GEO_URL = "https://maps.googleapis.com/maps/api/geocode/json?&latlng="
 
-app.config['GEO_URL'] = GEO_URL
+application.config['GEO_URL'] = GEO_URL
 
-mongo = PyMongo(app)
+mongo = PyMongo(application)
 
 def output_json(obj, code, headers=None):
     resp = make_response(dumps(obj), code)
     resp.headers.extend(headers or {})
     return resp
 
-api = Api(app)
+api = Api(application)
 api.representations = {'application/json': output_json}
 
 # Logging section

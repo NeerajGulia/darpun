@@ -85,7 +85,7 @@ def tryAddLocation(lat, lng, disease):
         log.error('tryAddLocation: ', str(e))
 
 def getGeoInfo(lat, lng):
-    url = (app.config['GEO_URL'] + lat + "," + lng)
+    url = (application.config['GEO_URL'] + lat + "," + lng)
     result = requests.get(url)
     js = result.json()
     if result.status_code != 200 or len(js['results']) == 0:

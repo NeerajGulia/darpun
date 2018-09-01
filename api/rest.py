@@ -2,7 +2,7 @@ import json
 from flask import request, abort, jsonify
 from flask_restful import Resource, reqparse
 from bson.objectid import ObjectId
-from api import utils, app, api, mongo, schema
+from api import utils, application, api, mongo, schema
 from werkzeug.datastructures import FileStorage
 import uuid
 import os
@@ -57,7 +57,7 @@ class DiseaseList(Resource):
         if allowed:
             name = uuid.uuid4().hex
             filename = name + "." + ext
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            filepath = os.path.join(application.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
             outp = utils.predict(filepath)
             output = json.loads(outp)
@@ -71,7 +71,7 @@ class DiseaseList(Resource):
             return jsonify({'result' : {'status': False, 'message': output['message']}})
         abort(400)
 
-@app.route('/')
+@application.route('/')
 def dashboard():
     return render_template('dashboard.html')
         
