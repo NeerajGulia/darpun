@@ -7,8 +7,11 @@ from werkzeug.datastructures import FileStorage
 import uuid
 import os
 from flask import render_template
+import time
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+log = logging.getLogger(__name__) 
 
 def allowed_file(filename):
     ext = filename.rsplit('.', 1)[1].lower()
@@ -46,6 +49,7 @@ class DiseaseList(Resource):
         return  [x for x in mongo.db.diseases.find({}, {'_id': False})]
 
     def post(self):
+        s1 = time.time()
         args = self.parser.parse_args()
         lat = args['lat']
         lng = args['lng']
@@ -59,14 +63,19 @@ class DiseaseList(Resource):
             filename = name + "." + ext
             filepath = os.path.join(application.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
+            start = time.time()
             outp = utils.predict(filepath)
+            log.debug('time taken for utils.predict: ', time.time() - start)
             output = json.loads(outp)
             if output['status']:
                 name = output['disease']['name']
                 id = mongo.db.diseases.find_one({'name' : name})
                 if not id: #we do not identify this desease yet
                     return jsonify({'result' : {'status': False, 'message': 'We are not able to predict the disease for given image'}})
-                utils.tryAddLocation(lat, lng, name)
+                s2 = time.time()
+                utils.fireAndForget(utils.tryAddLocation, lat, lng, name)
+                log.debug('tryAddLocation: ', time.time() - s2)
+                log.debug('total time taken by post call: ', time.time() - s1)
                 return jsonify({'result' : output})
             return jsonify({'result' : {'status': False, 'message': output['message']}})
         abort(400)

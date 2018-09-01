@@ -7,6 +7,9 @@ import numpy as np
 import csv
 import os
 import tensorflow as tf
+import time
+
+log = logging.getLogger(__name__) 
 
 class Predict:
     def __init__(self, model_path, label_path):
@@ -35,8 +38,11 @@ class Predict:
         """
         x = self.load_img_from_path(filepath)
         x = np.expand_dims(x, axis=0)
+        s1 = time.time()
         with self.graph.as_default():
             preds = self.model.predict(x)
+        
+        log.debug('make_prediction: ', time.time() - s1)
         idx = np.argsort(preds)[0][-3:][::-1]
         percent = preds[0][idx]*100
         out = [self.label_names[i] for i in idx]        

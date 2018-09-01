@@ -5,6 +5,7 @@ from api.schema import Prediction, Disease, Remedy, Location, Geocode, ComplexHa
 import logging
 import os
 import numpy as np
+import asyncio
 
 log = logging.getLogger(__name__) 
 
@@ -55,6 +56,13 @@ def getRemedy(name):
 
 def getJson(obj):
     return json.loads(json.dumps(obj, default=ComplexHandler))
+
+def fireAndForget(task, *args, **kwargs):
+    loop = asyncio.new_event_loop()
+    if callable(task):
+        return loop.run_in_executor(None, task, *args, **kwargs)
+    else:    
+        print('Task must be a callable')
     
 def tryAddLocation(lat, lng, disease):
     try:
