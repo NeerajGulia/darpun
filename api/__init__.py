@@ -7,6 +7,9 @@ import logging
 import logging.handlers
 from flask_cors import CORS
 from predict.model import Predict
+from keras.models import load_model
+import tensorflow as tf
+import csv
 
 application = Flask(__name__)
 CORS(application)
@@ -56,6 +59,14 @@ modelPath = os.environ.get('MODEL_PATH')
 if not modelPath:
     modelPath = 'predict/resnet.h5'
 
-model = Predict(modelPath, 'predict/label_names.csv')
+# model = Predict(modelPath, 'predict/label_names.csv')
+model = load_model(modelPath)
+graph = tf.get_default_graph()
+label_names = {}
+with open('predict/label_names.csv') as csvfile:
+    reader = csv.reader(csvfile)
+    for line in reader:
+        label_names[int(line[1])] = line[0]
+
 
 import api.rest

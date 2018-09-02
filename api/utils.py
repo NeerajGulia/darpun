@@ -6,14 +6,34 @@ import logging
 import os
 import numpy as np
 import asyncio
+import matplotlib.image as mpimg
+import cv2
+import time
 
 log = logging.getLogger(__name__) 
 
 def getJson(obj):
     return json.loads(json.dumps(obj, default=ComplexHandler))
 
+def make_prediction(filepath):
+    """
+    pass the input to the model for prediction
+    Returns: list containing top 3 predictions along with percentage probability
+    """
+    image = mpimg.imread(filepath)
+    image = cv2.resize(image, (224, 224))
+    image = np.reshape(image, (1,224, 224, 3))
+    s1 = time.time()
+    with graph.as_default():
+        preds = model.predict(image)    
+    print('make_prediction: ' +  str(time.time() - s1))
+    idx = np.argsort(preds)[0][-3:][::-1]
+    percent = preds[0][idx]*100
+    out = [label_names[i] for i in idx]        
+    return list(zip(out,percent))
+    
 def predict(filepath):
-    output = model.make_prediction(filepath)
+    output = make_prediction(filepath)
     print('predict output: ' + str(output))
     # print('predict: filepath: {}, prediction: {}'.format(filepath, output))
     if len(output) > 0:
