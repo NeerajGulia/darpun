@@ -21,8 +21,14 @@
       width: 100%;
     }
     .custom-label {
-      margin-right: 20px;
-      margin-left: 5px;
+        margin-right: 2px;
+        margin-left: 2px;
+        display: inline-block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 75%;
+        margin-bottom: 0;
     }
     #options {
       margin-top: 10px;
@@ -276,6 +282,7 @@
         var label = document.createElement('label')
         label.htmlFor = "chckbx_" + uniques[city];
         label.appendChild(document.createTextNode(uniques[city]));
+        label.setAttribute('title', uniques[city]);
         label.classList.add("custom-label");
 
         container.appendChild(checkbox);

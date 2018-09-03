@@ -88,7 +88,7 @@ def fireAndForget(task, *args, **kwargs):
     
 def tryAddLocation(lat, lng, disease):
     try:
-        # print('tryAddLocation: lat: {}, lng: {}, disease: {}'.format(lat, lng, disease))
+        print('tryAddLocation: lat: {}, lng: {}, disease: {}'.format(lat, lng, disease))
         # location = mongo.db.location.find_one({'geocode' : {'lat' : lat, 'lng': lng}, 'disease': disease})
         if mongo.db.location.find_one({'geocode' : {'lat' : lat, 'lng': lng}, 'disease': disease}):
             return #we already have data for this geocode and disease, so not adding it again
@@ -99,7 +99,7 @@ def tryAddLocation(lat, lng, disease):
         loc.geocode = geocode
         loc.disease = disease
         output = getGeoInfo(lat, lng)
-        # print('tryAddLocation: output: ', output)
+        print('tryAddLocation: output: ', output)
         if output is not None:
             loc.pincode = output.get('postal_code', None)
             loc.city = output.get('administrative_area_level_2', None)
