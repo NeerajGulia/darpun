@@ -3,7 +3,7 @@ aniso8601==3.0.2
 astor==0.7.1
 asyncio==3.4.3
 backcall==0.1.0
-bleach==3.1.2
+bleach==3.1.4
 certifi==2018.8.24
 chardet==3.0.4
 click==6.7
