@@ -15,7 +15,7 @@ decorator==4.3.0
 dnspython==1.15.0
 entrypoints==0.2.3
 Flask==1.0.2
-Flask-Cors==3.0.6
+Flask-Cors==3.0.9
 Flask-PyMongo==2.1.0
 Flask-RESTful==0.3.6
 gast==0.2.0
